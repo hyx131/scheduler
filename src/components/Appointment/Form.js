@@ -9,6 +9,7 @@ const Form = props => {
   const reset = () => {
     setName("");
     setInterviewer(null);
+    props.onCancel();
   };
 
   return (

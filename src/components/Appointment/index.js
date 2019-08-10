@@ -65,7 +65,7 @@ const Appointment = props => {
               interviewer: interviewer
             };
           }}
-          onCancel={props.onCancel}
+          onCancel={() => back()}
         />
       )}
       {mode === "edit" && (
