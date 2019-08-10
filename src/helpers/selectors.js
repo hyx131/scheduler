@@ -26,4 +26,18 @@ export const getInterview = (state, interview) => {
       };
 };
 
+export function getInterviewersForDay(state, day) {
+  const interviewers = [];
+  const arrAppointments = getAppointmentsForDay(state, day);
+
+  arrAppointments.forEach(appointment => {
+    if (appointment.interview) {
+      let interviewerId = appointment.interview.interviewer;
+      interviewers.push(state.interviewers[interviewerId]);
+    }
+  });
+
+  return interviewers;
+}
+
 export default getAppointmentsForDay;
