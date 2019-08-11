@@ -20,7 +20,9 @@ const Appointment = props => {
   const CREATE = "create";
   const EDIT = "edit";
 
-  const { mode, transition, back } = useVisualMode(EMPTY);
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
 
   // useEffect(() => {
   //   if (props.interview && mode === EMPTY) {
@@ -35,7 +37,6 @@ const Appointment = props => {
     <article className="appointment2">
       <Header time={props.time} />
       {mode === "empty" && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === "show" && !props.interview && <Empty onAdd={props.onAdd} />}
       {mode === "show" && props.interview && (
         <Show
           student={props.interview.student}
@@ -58,7 +59,7 @@ const Appointment = props => {
       {mode === "create" && (
         <Form
           name={props.name}
-          interviewers={[]}
+          interviewers={props.interviewers}
           onSave={(name, interviewer) => {
             return {
               name: name,
