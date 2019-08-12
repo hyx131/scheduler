@@ -18,7 +18,8 @@ const Appointment = props => {
   const SHOW = "show";
   const CONFIRM = "confirm";
   const STATUS = "status";
-  const ERROR = "error";
+  const ERROR_SAVE = "error_save";
+  const ERROR_DELETE = "error_delete";
   const CREATE = "create";
   const EDIT = "edit";
   const SAVING = "saving";
@@ -54,9 +55,11 @@ const Appointment = props => {
           message="Are you sure you want to delete the appointment?"
           onConfirm={() => {
             transition(DELETING);
-            deleteInterview(id).then(() => {
-              transition(EMPTY);
-            });
+            deleteInterview(id)
+              .then(() => {
+                transition(EMPTY);
+              })
+              .catch(error => transition(ERROR_DELETE, true));
           }}
           onCancel={() => transition(SHOW)}
         />
@@ -67,15 +70,21 @@ const Appointment = props => {
       {mode === "error" && (
         <Error message={props.message} onClose={props.OnClose} />
       )}
+      {mode === "error_save" && (
+        <Error message="Could not save appointment." onClose={() => back()} />
+      )}
+      {mode === "error_delete" && (
+        <Error message="Could not delete appointment." onClose={() => back()} />
+      )}
       {mode === "create" && (
         <Form
           name={props.name}
           interviewers={props.interviewers}
           onSave={(name, interviewer) => {
             transition(SAVING);
-            bookInterview(id, { student: name, interviewer }).then(() =>
-              transition(SHOW)
-            );
+            bookInterview(id, { student: name, interviewer })
+              .then(() => transition(SHOW))
+              .catch(error => transition(ERROR_SAVE, true));
           }}
           onCancel={() => back()}
         />
@@ -87,9 +96,11 @@ const Appointment = props => {
           interviewer={props.interviewer}
           onSave={(name, interviewer) => {
             transition(SAVING);
-            bookInterview(id, { student: name, interviewer }).then(() => {
-              transition(SHOW);
-            });
+            bookInterview(id, { student: name, interviewer })
+              .then(() => {
+                transition(SHOW);
+              })
+              .catch(error => transition(ERROR_SAVE, true));
           }}
           onCancel={() => transition(SHOW)}
         />
