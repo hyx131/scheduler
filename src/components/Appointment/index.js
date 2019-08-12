@@ -45,7 +45,7 @@ const Appointment = props => {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onEdit={props.onEdit}
+          onEdit={() => transition(EDIT)}
           onDelete={() => transition(CONFIRM)}
         />
       )}
@@ -91,7 +91,7 @@ const Appointment = props => {
               transition(SHOW);
             });
           }}
-          onCancel={props.onCancel}
+          onCancel={() => transition(SHOW)}
         />
       )}
     </article>
