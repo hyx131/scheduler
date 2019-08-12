@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment/index";
@@ -23,14 +23,65 @@ const interviewers = [
 // });
 
 export default function Application(props) {
-  const [state, setState] = useState({
+  const SET_INTERVIEW = "SET_ITNERVIEW";
+  const SET_DAY = "SET_DAY";
+  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+
+  const reducer = (state, action) => {
+    const {
+      appointments,
+      day,
+      days,
+      id,
+      interview,
+      interviewers,
+      type
+    } = action;
+
+    switch (type) {
+      case SET_DAY:
+        return { ...state, day };
+      case SET_INTERVIEW: {
+        const appointment = {
+          ...state.appointments[id],
+          interview: { ...interview }
+        };
+
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        };
+
+        return { ...state, appointments };
+      }
+      case SET_APPLICATION_DATA:
+        return { ...state, days, appointments, interviewers };
+    }
+  };
+
+  const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
   });
 
-  const setDay = day => setState(prev => ({ ...prev, day }));
+  const bookInterview = (id, interview) => {
+    return axios
+      .put(`http://localhost:3001/api/appointments/${id}`, { interview })
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, id, interview });
+      });
+  };
+
+  const setDay = day => dispatch({ type: SET_DAY, day: day });
+  const setApplicationData = (days, appointments, interviewers) =>
+    dispatch({
+      type: SET_APPLICATION_DATA,
+      days: days,
+      appointments: appointments,
+      interviewers: interviewers
+    });
 
   useEffect(() => {
     Promise.all([
@@ -38,13 +89,7 @@ export default function Application(props) {
       axios.get("http://localhost:3001/api/appointments"),
       axios.get("http://localhost:3001/api/interviewers")
     ]).then(all => {
-      const set = {
-        day: "Monday",
-        days: all[0].data,
-        appointments: all[1].data,
-        interviewers: all[2].data
-      };
-      setState(set);
+      setApplicationData(all[0].data, all[1].data, all[2].data);
     });
   }, []);
 
@@ -61,11 +106,7 @@ export default function Application(props) {
           alt="Interview Scheduler"
         />
         <hr className="sidebar__separator sidebar--centered" />
-        <DayList
-          days={state.days}
-          day={state.day}
-          setDay={day => setDay(day)}
-        />
+        <DayList days={state.days} day={state.day} setDay={setDay} />
         <nav className="sidebar__menu" />
         <img
           className="sidebar__lhl sidebar--centered"
@@ -80,7 +121,9 @@ export default function Application(props) {
             <Appointment
               key={appointment.id}
               {...appointment}
+              interview={getInterview(state, appointment.interview)}
               interviewers={interviewers}
+              bookInterview={bookInterview}
             />
           );
         })}

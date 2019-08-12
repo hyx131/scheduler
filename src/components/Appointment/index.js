@@ -12,6 +12,8 @@ import Form from "./Form";
 import useVisualMode from "hooks/useVisualMode";
 
 const Appointment = props => {
+  const { interview, id, interviewers, bookInterview } = props;
+
   const EMPTY = "empty";
   const SHOW = "show";
   const CONDIRM = "confirm";
@@ -19,6 +21,7 @@ const Appointment = props => {
   const ERROR = "error";
   const CREATE = "create";
   const EDIT = "edit";
+  const SAVING = "saving";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -61,10 +64,10 @@ const Appointment = props => {
           name={props.name}
           interviewers={props.interviewers}
           onSave={(name, interviewer) => {
-            return {
-              name: name,
-              interviewer: interviewer
-            };
+            transition(SAVING);
+            bookInterview(id, { student: name, interviewer }).then(() =>
+              transition(SHOW)
+            );
           }}
           onCancel={() => back()}
         />
@@ -75,10 +78,9 @@ const Appointment = props => {
           interviewers={props.interviewers}
           interviewer={props.interviewer}
           onSave={(name, interviewer) => {
-            return {
-              name: name,
-              interviewer: interviewer
-            };
+            bookInterview(id, { student: name, interviewer }).then(() => {
+              transition(SHOW);
+            });
           }}
           onCancel={props.onCancel}
         />

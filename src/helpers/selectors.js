@@ -36,14 +36,14 @@ export function getAppointmentsForDay(state, day) {
   return appointment;
 }
 
-// export const getInterview = (state, interview) => {
-//   return !interview
-//     ? null
-//     : {
-//         student: interview.student,
-//         interviewer: { ...state.interviewers[interview.interviewer] }
-//       };
-// };
+export const getInterview = (state, interview) => {
+  return !interview
+    ? null
+    : {
+        student: interview.student,
+        interviewer: { ...state.interviewers[interview.interviewer] }
+      };
+};
 
 // export function getInterviewersForDay(state, day) {
 //   const interviewers = [];
