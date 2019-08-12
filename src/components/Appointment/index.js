@@ -22,6 +22,7 @@ const Appointment = props => {
   const CREATE = "create";
   const EDIT = "edit";
   const SAVING = "saving";
+  const DELETING = "deleting";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -56,6 +57,8 @@ const Appointment = props => {
         />
       )}
       {mode === "status" && <Status message={props.message} />}
+      {mode === "saving" && <Status message="Saving" />}
+      {mode === "deleting" && <Status message="Deleting" />}
       {mode === "error" && (
         <Error message={props.message} onClose={props.OnClose} />
       )}
@@ -78,6 +81,7 @@ const Appointment = props => {
           interviewers={props.interviewers}
           interviewer={props.interviewer}
           onSave={(name, interviewer) => {
+            transition(SAVING);
             bookInterview(id, { student: name, interviewer }).then(() => {
               transition(SHOW);
             });
