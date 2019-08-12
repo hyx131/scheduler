@@ -74,6 +74,14 @@ export default function Application(props) {
       });
   };
 
+  const deleteInterview = id => {
+    return axios
+      .delete(`http://localhost:3001/api/appointments/${id}`)
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, id, interview: null });
+      });
+  };
+
   const setDay = day => dispatch({ type: SET_DAY, day: day });
   const setApplicationData = (days, appointments, interviewers) =>
     dispatch({
@@ -124,6 +132,7 @@ export default function Application(props) {
               interview={getInterview(state, appointment.interview)}
               interviewers={interviewers}
               bookInterview={bookInterview}
+              deleteInterview={deleteInterview}
             />
           );
         })}

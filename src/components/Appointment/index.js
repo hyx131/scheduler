@@ -12,11 +12,11 @@ import Form from "./Form";
 import useVisualMode from "hooks/useVisualMode";
 
 const Appointment = props => {
-  const { interview, id, interviewers, bookInterview } = props;
+  const { interview, id, interviewers, bookInterview, deleteInterview } = props;
 
   const EMPTY = "empty";
   const SHOW = "show";
-  const CONDIRM = "confirm";
+  const CONFIRM = "confirm";
   const STATUS = "status";
   const ERROR = "error";
   const CREATE = "create";
@@ -46,13 +46,18 @@ const Appointment = props => {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onEdit={props.onEdit}
-          onDelete={props.onDelete}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
       {mode === "confirm" && (
         <Confirm
-          message={props.message}
-          onConfirm={props.onConfirm}
+          message="Are you sure you want to delete the appointment?"
+          onConfirm={() => {
+            transition(DELETING);
+            deleteInterview(id).then(() => {
+              transition(EMPTY);
+            });
+          }}
           onCancel={props.onCancel}
         />
       )}
