@@ -58,7 +58,7 @@ const Appointment = props => {
               transition(EMPTY);
             });
           }}
-          onCancel={props.onCancel}
+          onCancel={() => transition(SHOW)}
         />
       )}
       {mode === "status" && <Status message={props.message} />}
