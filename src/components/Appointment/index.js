@@ -38,6 +38,7 @@ const Appointment = props => {
   //   }
   // }, [props.interview, transition, mode]);
 
+  console.log("pppppppppppppp", props);
   return (
     <article className="appointment2">
       <Header time={props.time} />
@@ -78,7 +79,6 @@ const Appointment = props => {
       )}
       {mode === "create" && (
         <Form
-          name={props.name}
           interviewers={props.interviewers}
           onSave={(name, interviewer) => {
             transition(SAVING);
@@ -91,9 +91,9 @@ const Appointment = props => {
       )}
       {mode === "edit" && (
         <Form
-          name={props.name}
+          name={props.interview.student}
           interviewers={props.interviewers}
-          interviewer={props.interviewer}
+          interviewer={props.interview.interviewer.id}
           onSave={(name, interviewer) => {
             transition(SAVING);
             bookInterview(id, { student: name, interviewer })
@@ -102,7 +102,7 @@ const Appointment = props => {
               })
               .catch(error => transition(ERROR_SAVE, true));
           }}
-          onCancel={() => transition(SHOW)}
+          onCancel={() => back()}
         />
       )}
     </article>
