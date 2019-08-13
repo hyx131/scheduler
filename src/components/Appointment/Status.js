@@ -2,7 +2,7 @@ import React from "react";
 
 const Status = props => {
   return (
-    <main class="appointment__card appointment__card--status">
+    <main className="appointment__card appointment__card--status">
       <img
         class="appointment__status-image"
         src="images/status.png"

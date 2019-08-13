@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./styles.scss";
 
 import Header from "./Header";
@@ -12,7 +12,7 @@ import Form from "./Form";
 import useVisualMode from "hooks/useVisualMode";
 
 const Appointment = props => {
-  const { interview, id, interviewers, bookInterview, deleteInterview } = props;
+  const { id, bookInterview, deleteInterview } = props;
 
   const EMPTY = "empty";
   const SHOW = "show";
@@ -29,16 +29,8 @@ const Appointment = props => {
     props.interview ? SHOW : EMPTY
   );
 
-  // useEffect(() => {
-  //   if (props.interview && mode === EMPTY) {
-  //     transition(SHOW);
-  //   }
-  //   if (props.interview === null && mode === SHOW) {
-  //     transition(EMPTY);
-  //   }
-  // }, [props.interview, transition, mode]);
-
   console.log("pppppppppppppp", props);
+
   return (
     <article className="appointment2">
       <Header time={props.time} />
