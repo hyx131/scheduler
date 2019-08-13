@@ -82,7 +82,7 @@ const useApplicationData = props => {
     ]).then(all => {
       setApplicationData(all[0].data, all[1].data, all[2].data);
     });
-  }, []);
+  }, [state]);
 
   return {
     state,
