@@ -29,7 +29,7 @@ const Appointment = props => {
     props.interview ? SHOW : EMPTY
   );
 
-  console.log("pppppppppppppp", props);
+  // console.log("pppppppppppppp", props);
 
   return (
     <article className="appointment2">

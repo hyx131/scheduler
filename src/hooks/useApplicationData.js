@@ -1,6 +1,8 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
+const ENV = process.env.REACT_APP_WEBSOCKET_URL;
+
 const useApplicationData = props => {
   const SET_INTERVIEW = "SET_ITNERVIEW";
   const SET_DAY = "SET_DAY";
@@ -20,7 +22,7 @@ const useApplicationData = props => {
     switch (type) {
       case SET_DAY:
         return { ...state, day };
-      case SET_INTERVIEW: {
+      case "SET_INTERVIEW": {
         const appointment = {
           ...state.appointments[id],
           interview: { ...interview }
@@ -53,7 +55,7 @@ const useApplicationData = props => {
     return axios
       .put(`http://localhost:3001/api/appointments/${id}`, { interview })
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, id, interview });
+        dispatch({ type: "SET_INTERVIEW", id, interview });
       });
   };
 
@@ -61,7 +63,7 @@ const useApplicationData = props => {
     return axios
       .delete(`http://localhost:3001/api/appointments/${id}`)
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, id, interview: null });
+        dispatch({ type: "SET_INTERVIEW", id, interview: null });
       });
   };
 
@@ -75,6 +77,19 @@ const useApplicationData = props => {
     });
 
   useEffect(() => {
+    const ws = new WebSocket(ENV);
+
+    ws.onmessage = event => {
+      console.log(JSON.parse(event.data));
+
+      const { type, id, interview } = JSON.parse(event.data);
+      dispatch({ type, id, interview });
+
+      return () => ws.close();
+    };
+  }, []);
+
+  useEffect(() => {
     Promise.all([
       axios.get("http://localhost:3001/api/days"),
       axios.get("http://localhost:3001/api/appointments"),
@@ -82,7 +97,7 @@ const useApplicationData = props => {
     ]).then(all => {
       setApplicationData(all[0].data, all[1].data, all[2].data);
     });
-  }, [state]);
+  }, []);
 
   return {
     state,
