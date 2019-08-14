@@ -33,6 +33,12 @@ export function getAppointmentsForDay(state, day) {
     }
   });
 
+  // const foundDay = state.days.filter(d => d.name === day)[0];
+  // if (!foundDay) {
+  //   return [];
+  // }
+  // return foundDay.appointmnets.map(id=> state.appointments[id]);
+
   return appointment;
 }
 

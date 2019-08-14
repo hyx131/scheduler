@@ -18,8 +18,11 @@ export default function Application(props) {
     deleteInterview
   } = useApplicationData();
 
-  // console.log("state: ", state);
-  const appointments = getAppointmentsForDay(state, state.day);
+  console.log("state: ", state);
+  const appointments = getAppointmentsForDay(
+    state /*whole state*/,
+    state.day /*specific day want to lookup */
+  );
   const interviewers = getInterviewersForDay(state, state.day);
 
   return (
