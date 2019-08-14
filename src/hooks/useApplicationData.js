@@ -5,7 +5,7 @@ import axios from "axios";
 
 const useApplicationData = props => {
   const SET_INTERVIEW = "SET_ITNERVIEW";
-  // const SET_DAY = "SET_DAY";
+  const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 
   const reducer = (state, action) => {
