@@ -22,7 +22,7 @@ const useApplicationData = props => {
     switch (type) {
       case SET_DAY:
         return { ...state, day };
-      case "SET_INTERVIEW": {
+      case SET_INTERVIEW: {
         const appointment = {
           ...state.appointments[id],
           interview: { ...interview }
@@ -56,7 +56,7 @@ const useApplicationData = props => {
     return axios
       .put(`http://localhost:3001/api/appointments/${id}`, { interview })
       .then(() => {
-        dispatch({ type: "SET_INTERVIEW", id, interview });
+        dispatch({ type: SET_INTERVIEW, id, interview });
       });
   };
 
@@ -64,7 +64,7 @@ const useApplicationData = props => {
     return axios
       .delete(`http://localhost:3001/api/appointments/${id}`)
       .then(() => {
-        dispatch({ type: "SET_INTERVIEW", id, interview: null });
+        dispatch({ type: SET_INTERVIEW, id, interview: null });
       });
   };
 
@@ -105,7 +105,7 @@ const useApplicationData = props => {
       //   interviewers:
       // }))
     });
-  }, [state.trigger]); // run once on mount [], dependencies = depend on the [value of this]....???
+  }, [state.trigger]); // run once on mount [], dependencies = depend on the [value of this]: re-run whenever this value changes
 
   return {
     state,
