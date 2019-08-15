@@ -11,6 +11,12 @@ import Form from "./Form";
 
 import useVisualMode from "hooks/useVisualMode";
 
+import axios from "axios";
+
+if (process.env.REACT_APP_API_BASE_URL) {
+  axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+}
+
 const Appointment = props => {
   const { id, bookInterview, deleteInterview } = props;
 
