@@ -53,19 +53,15 @@ const useApplicationData = props => {
   });
 
   const bookInterview = (id, interview) => {
-    return axios
-      .put(`http://localhost:3001/api/appointments/${id}`, { interview })
-      .then(() => {
-        dispatch({ type: SET_INTERVIEW, id, interview });
-      });
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      dispatch({ type: SET_INTERVIEW, id, interview });
+    });
   };
 
   const deleteInterview = id => {
-    return axios
-      .delete(`http://localhost:3001/api/appointments/${id}`)
-      .then(() => {
-        dispatch({ type: SET_INTERVIEW, id, interview: null });
-      });
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      dispatch({ type: SET_INTERVIEW, id, interview: null });
+    });
   };
 
   const setDay = day => dispatch({ type: SET_DAY, day: day });
@@ -92,9 +88,9 @@ const useApplicationData = props => {
 
   useEffect(() => {
     Promise.all([
-      axios.get("http://localhost:3001/api/days"),
-      axios.get("http://localhost:3001/api/appointments"),
-      axios.get("http://localhost:3001/api/interviewers")
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers")
     ]).then(all => {
       // all = [0, 1, 2]
       setApplicationData(all[0].data, all[1].data, all[2].data);
